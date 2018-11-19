@@ -16,7 +16,8 @@
         <property name="show_sql">true</property>
 
         <mapping class="com.yinq.user.entity.UserAccount"/>
-
+		<mapping class="com.yinq.user.entity.UserModel"/>
+		<mapping class="com.yinq.situation.entity.MealSituationModel"/>
     </session-factory>
 
 </hibernate-configuration>

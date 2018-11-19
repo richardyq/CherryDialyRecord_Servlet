@@ -2,7 +2,7 @@ package com.yinq.servlet;
 
 public enum HttpRequestService {
 	UserService("userService"),
-	SituationService("SituationService"),
+	SituationService("situationService"),
 	UnKnownService("Error.");
 	
 	private String name;
