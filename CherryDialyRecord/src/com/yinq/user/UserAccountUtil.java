@@ -63,7 +63,7 @@ public class UserAccountUtil {
 	        // Rollback in case of an error occurred.
 	        session.getTransaction().rollback();
 		}
-		
+		session.close();
 		return 0;
 	}
 	

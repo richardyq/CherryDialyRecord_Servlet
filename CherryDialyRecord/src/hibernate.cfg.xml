@@ -18,6 +18,7 @@
         <mapping class="com.yinq.user.entity.UserAccount"/>
 		<mapping class="com.yinq.user.entity.UserModel"/>
 		<mapping class="com.yinq.situation.entity.MealSituationModel"/>
+		<mapping class="com.yinq.situation.entity.SleepSituationModel"/> 
     </session-factory>
 
 </hibernate-configuration>

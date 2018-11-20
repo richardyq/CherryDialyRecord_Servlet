@@ -5,6 +5,8 @@ package com.yinq.situation.dispatcher;
 public enum SituationMethod {
 	AddMealSituationMethod("addMealSituation"),
 	TodayMealSituationMethod("todayMealSituation"),
+	AddSleepSituationMethod("addSleepSituation"),
+	TodaySleepSituationMethod("todaySleepSituation"),
 	UnkonwnMethod("Unkonwon");
 	
 	private String name;

@@ -27,7 +27,7 @@ public class UserInfoUtil {
 	        // Rollback in case of an error occurred.
 	        session.getTransaction().rollback();
 		}
-		
+		session.close();
 		return userInfo;
 	}
 	
