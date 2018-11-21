@@ -1,5 +1,6 @@
 package com.yinq.situation.meal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import com.yinq.datamodel.HibernateUtil;
 import com.yinq.datamodel.RespError;
 import com.yinq.servlet.HttpRespModel;
 import com.yinq.situation.entity.MealSituationModel;
+import com.yinq.situation.entity.MealSituationParam;
 import com.yinq.user.entity.UserAccount;
 
 public class MealSituationUtil {
@@ -53,7 +55,7 @@ public class MealSituationUtil {
 		
 		try {
 			 
-			session.persist(mealModel);//persisting the object  
+			session.save(mealModel);//persisting the object  
 
 			transaction.commit();//transaction is committed  
 		} catch (Exception e) {
@@ -71,12 +73,16 @@ public class MealSituationUtil {
 	protected List<MealSituationModel> getMealSituationWithDate(String dateStr) {
 		Session session = HibernateUtil.getSession();
 //		Transaction transaction=session.beginTransaction(); 
-		List<MealSituationModel> meals = null;
+		ArrayList<MealSituationModel> retModels = null ;
 		try {
 			String sql = "Select e from " + MealSituationModel.class.getName() + " e " + " where e.date=:date ";
 			Query<MealSituationModel> query = session.createQuery(sql);
 			query.setParameter("date", dateStr);
-			meals = query.getResultList();
+			List<MealSituationModel> meals =  query.getResultList();
+			retModels = new ArrayList<MealSituationModel>();
+			for (MealSituationModel mealSituationModel : meals) {
+				retModels.add(new MealSituationModel(mealSituationModel));
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			session.getTransaction().rollback();
@@ -84,25 +90,30 @@ public class MealSituationUtil {
 		}
 		session.close();
 		
-		return meals;
+		return retModels;
 	}
 	
-	public HttpRespModel AppendMealSituation(MealSituationModel model) {
+	public HttpRespModel AppendMealSituation(MealSituationParam param) {
 		HttpRespModel respModel = new HttpRespModel();
-		if (model == null) {
+		if (param == null) {
 			respModel.setCode(RespError.urlInvalidParamError);
 			respModel.setMessage("对不起，您输入的参数不正确。");
 			return respModel;
 		}
 		
-		if (model.getDate() == null || model.getDate().isEmpty()) {
+		if (param.getDate() == null || param.getDate().isEmpty()) {
 			respModel.setCode(RespError.urlInvalidParamError);
 			respModel.setMessage("对不起，您输入的日期参数不正确。");
 			return respModel;
 		}
 		
-		MealSituationModel mealMdoel = new MealSituationModel(model.getDate(), model.getMealCode(),model.getSpeed(), 
-				model.getAmount(), model.getFeed());
+		if (param.getUserId() == null || param.getUserId().isEmpty()) {
+			respModel.setCode(RespError.urlInvalidParamError);
+			respModel.setMessage("对不起，您输入的用户参数不正确。");
+			return respModel;
+		}
+		
+		MealSituationModel mealMdoel = new MealSituationModel(param);
 		
 		int retCode = addMealSituation(mealMdoel);
 		respModel.setCode(retCode);
@@ -129,17 +140,7 @@ public class MealSituationUtil {
 			}
 		}
 		else {
-			Session session = HibernateUtil.getSession();
-			try {
-				session.getTransaction().begin();
-				MealSituationModel retModel = session.get(MealSituationModel.class, mealMdoel.getMealId()); 
-				respModel.setResult(retModel);
-			}
-			catch (Exception e) {
-				// TODO: handle exception
-				session.close();
-			}
-			session.close();
+			respModel.setResult(mealMdoel);
 		}
 			
 		return respModel;

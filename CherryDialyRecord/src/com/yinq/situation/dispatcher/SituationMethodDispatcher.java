@@ -11,7 +11,9 @@ import com.yinq.servlet.MethodDispatcher;
 import com.yinq.situation.entity.InterestSituationModel;
 import com.yinq.situation.entity.InterestSituationParam;
 import com.yinq.situation.entity.MealSituationModel;
+import com.yinq.situation.entity.MealSituationParam;
 import com.yinq.situation.entity.SleepSituationModel;
+import com.yinq.situation.entity.SleepSituationParam;
 import com.yinq.situation.interest.InterestUtil;
 import com.yinq.situation.meal.MealSituationUtil;
 import com.yinq.situation.sleep.SleepSituationUtil;
@@ -31,9 +33,9 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		{
 			//添加吃饭记录
 			MealSituationUtil util = new MealSituationUtil();
-			MealSituationModel mealModel = (MealSituationModel)new MealSituationModel().fromJson(body);
+			MealSituationParam param = (MealSituationParam)new MealSituationParam().fromJson(body);
 			
-			respModel = util.AppendMealSituation(mealModel);
+			respModel = util.AppendMealSituation(param);
 			break;
 		}
 		case TodayMealSituationMethod:{
@@ -48,15 +50,15 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		}
 		case AddSleepSituationMethod:{
 			//添加睡觉情况记录
-			SleepSituationModel sleepModel = (SleepSituationModel)new SleepSituationModel().fromJson(body);
+			SleepSituationParam param = (SleepSituationParam)new SleepSituationParam().fromJson(body);
 			SleepSituationUtil util = new SleepSituationUtil();
-			respModel = util.appendSleepSituation(sleepModel);
+			respModel = util.appendSleepSituation(param);
 			break;
 		}
 		case TodaySleepSituationMethod:{
 			//获取当天睡觉情况记录
 			SleepSituationUtil util = new SleepSituationUtil();
-			SleepSituationModel todayModel = new SleepSituationModel();
+			SleepSituationParam todayModel = new SleepSituationParam();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			String dateStr = format.format(new Date());
 			todayModel.setDate(dateStr);

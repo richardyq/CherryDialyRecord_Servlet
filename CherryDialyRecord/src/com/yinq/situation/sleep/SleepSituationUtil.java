@@ -1,6 +1,9 @@
 package com.yinq.situation.sleep;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,6 +14,7 @@ import com.yinq.datamodel.RespError;
 import com.yinq.servlet.HttpRespModel;
 import com.yinq.situation.entity.MealSituationModel;
 import com.yinq.situation.entity.SleepSituationModel;
+import com.yinq.situation.entity.SleepSituationParam;
 
 public class SleepSituationUtil {
 
@@ -18,8 +22,8 @@ public class SleepSituationUtil {
 		// TODO Auto-generated constructor stub
 	}
 	
-	protected int addSleepSituation(SleepSituationModel aSituationModel) {
-		if (aSituationModel == null) {
+	protected int addSleepSituation(SleepSituationModel model) {
+		if (model == null) {
 			return RespError.urlInvalidParamError;
 		}
 		
@@ -32,8 +36,8 @@ public class SleepSituationUtil {
 			String sql = "Select e from " + SleepSituationModel.class.getName() + " e " + " where e.date=:date and e.code=:code";
 			
 			Query<MealSituationModel> query = session.createQuery(sql);
-			query.setParameter("code", aSituationModel.getCode());
-			query.setParameter("date", aSituationModel.getDate());
+			query.setParameter("code", model.getCode());
+			query.setParameter("date", model.getDate());
 			List<MealSituationModel> meals = query.getResultList();
 			if (meals.size() > 0) {
 				//已经存在
@@ -52,7 +56,7 @@ public class SleepSituationUtil {
 		//保存操作
 		try {
 			 
-			session.persist(aSituationModel);//persisting the object  
+			session.save(model);//persisting the object  
 
 			transaction.commit();//transaction is committed  
 		} catch (Exception e) {
@@ -70,12 +74,17 @@ public class SleepSituationUtil {
 	protected List<SleepSituationModel> getTodaySleepSituations(String dateStr) {
 		Session session = HibernateUtil.getSession();
 //		SleepSituationModel transaction=session.beginTransaction(); 
-		List<SleepSituationModel> situationModels = null;
+		ArrayList<SleepSituationModel> retModels = null;
+		
 		try {
 			String sql = "Select e from " + SleepSituationModel.class.getName() + " e " + " where e.date=:date ";
 			Query<SleepSituationModel> query = session.createQuery(sql);
 			query.setParameter("date", dateStr);
-			situationModels = query.getResultList();
+			List<SleepSituationModel> situationModels = query.getResultList();
+			retModels = new ArrayList<SleepSituationModel>();
+			for (SleepSituationModel sleepSituationModel : situationModels) {
+				retModels.add(new SleepSituationModel(sleepSituationModel));
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			session.getTransaction().rollback();
@@ -83,25 +92,31 @@ public class SleepSituationUtil {
 		}
 		session.close();
 		
-		return situationModels;
+		return retModels;
 	}
 	
 	
-	public HttpRespModel appendSleepSituation(SleepSituationModel aModel) {
+	public HttpRespModel appendSleepSituation(SleepSituationParam param) {
 		HttpRespModel respModel = new HttpRespModel();
-		if (aModel == null) {
+		if (param == null) {
 			respModel.setCode(RespError.urlInvalidParamError);
 			respModel.setMessage("对不起，您输入的参数不正确。");
 			return respModel;
 		}
 		
-		if (aModel.getDate() == null || aModel.getDate().isEmpty()) {
+		if (param.getDate() == null || param.getDate().isEmpty()) {
 			respModel.setCode(RespError.urlInvalidParamError);
 			respModel.setMessage("对不起，您输入的日期参数不正确。");
 			return respModel;
 		}
 		
-		SleepSituationModel model = new SleepSituationModel(aModel.getDate(), aModel.getCode(), aModel.getStatus());
+		if (param.getUserId() == null || param.getUserId().isEmpty()) {
+			respModel.setCode(RespError.urlInvalidParamError);
+			respModel.setMessage("对不起，您输入的用户参数不正确。");
+			return respModel;
+		}
+		
+		SleepSituationModel model = new SleepSituationModel(param);
 		int retCode = addSleepSituation(model);
 		
 		if (retCode != 0) {
@@ -132,7 +147,7 @@ public class SleepSituationUtil {
 		return respModel;
 	}
 	
-	public HttpRespModel getSleepSituationList(SleepSituationModel aModel) {
+	public HttpRespModel getSleepSituationList(SleepSituationParam aModel) {
 		HttpRespModel respModel = new HttpRespModel();
 		if (aModel == null) {
 			respModel.setCode(RespError.urlInvalidParamError);
