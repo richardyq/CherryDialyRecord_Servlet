@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.yinq.datamodel.HibernateProxyTypeAdapter;
 import com.yinq.datamodel.JsonModel;
 
 @Entity
@@ -111,5 +114,6 @@ public class MealSituationModel extends JsonModel{
 	public void setScore(float score) {
 		this.score = score;
 	}
+	
 	
 }

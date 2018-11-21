@@ -3,6 +3,7 @@ package com.yinq.datamodel;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class JsonModel {
 	
@@ -25,7 +26,10 @@ public class JsonModel {
 	}
 	
 	protected Gson createGson() {
-		Gson gson = new Gson();
-		return gson;
+//		Gson gson = new Gson();
+//		return gson;
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		return builder.create();
 	}
 }

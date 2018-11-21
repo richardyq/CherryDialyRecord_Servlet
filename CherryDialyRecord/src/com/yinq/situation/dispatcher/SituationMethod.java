@@ -7,6 +7,9 @@ public enum SituationMethod {
 	TodayMealSituationMethod("todayMealSituation"),
 	AddSleepSituationMethod("addSleepSituation"),
 	TodaySleepSituationMethod("todaySleepSituation"),
+	InterestCateList("getAllInterestList"),
+	TodayInterestSituationMethod("todayInterestSituation"),
+	AddInterestSituationMethod("addInsertstSituation"),
 	UnkonwnMethod("Unkonwon");
 	
 	private String name;
