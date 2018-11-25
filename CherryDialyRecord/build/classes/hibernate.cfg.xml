@@ -21,7 +21,10 @@
 		<mapping class="com.yinq.situation.entity.MealSituationModel"/>
 		<mapping class="com.yinq.situation.entity.SleepSituationModel"/>
 		<mapping class="com.yinq.situation.entity.InterestCateModel"/> 
-		<mapping class="com.yinq.situation.entity.InterestSituationModel"/> 
+		<mapping class="com.yinq.situation.entity.InterestSituationModel"/>
+		 
+		<mapping class="com.yinq.situation.entity.SituationRecordModel"/>
+
     </session-factory>
 
 </hibernate-configuration>

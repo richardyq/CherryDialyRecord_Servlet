@@ -5,7 +5,7 @@ import com.yinq.datamodel.JsonModel;
 public class MealSituationParam extends JsonModel {
 
 	private String date;
-	private int mealCode;
+	private int code;
 	private int speed;
 	private int amount;
 	private int feed;
@@ -17,11 +17,11 @@ public class MealSituationParam extends JsonModel {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public int getMealCode() {
-		return mealCode;
+	public int getCode() {
+		return code;
 	}
-	public void setMealCode(int mealCode) {
-		this.mealCode = mealCode;
+	public void setCode(int code) {
+		this.code = code;
 	}
 	public int getSpeed() {
 		return speed;

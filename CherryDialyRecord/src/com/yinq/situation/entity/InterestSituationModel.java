@@ -22,33 +22,29 @@ import com.yinq.datamodel.JsonModel;
 
 @Entity
 @Table(name="interest_situation_table")
-public class InterestSituationModel extends JsonModel  {
+public class InterestSituationModel extends SituationDetModel  {
 
 	private String id;
 	private InterestCateModel cate;
-	private String date;
+	
 	private int status;
 	private int score;
 	
 	
 	public InterestSituationModel() {
 		// TODO Auto-generated constructor stub
-		String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
-		id = uuid;
+		
 	}
 	
-	public InterestSituationModel(String date, int cateId, int status){
-		String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
-		id = uuid;
+	public InterestSituationModel( int cateId, int status){
 		
-		this.date = date;
 		this.status = status;
 		this.score = 3 + status;
 		
 		Session session = HibernateUtil.getSession();
 		try {
 			InterestCateModel cateModel = session.get(InterestCateModel.class, cateId);
-			this.cate = cateModel;
+			this.cate = new InterestCateModel(cateModel);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -61,9 +57,9 @@ public class InterestSituationModel extends JsonModel  {
 		this.id = model.getId();
 		this.score = model.getScore();
 		this.status = model.status;
-		this.date = model.getDate();
 		
-		InterestCateModel cateModel = new InterestCateModel();
+		
+		InterestCateModel cateModel = new InterestCateModel(model.getCate());
 		this.cate = cateModel;
 		
 	}
@@ -78,24 +74,14 @@ public class InterestSituationModel extends JsonModel  {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="cateId", nullable = false)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="cateId")
 	public InterestCateModel getCate() {
 		return cate;
 	}
 
 	public void setCate(InterestCateModel cate) {
 		this.cate = cate;
-	}
-
-	@Column(name="date")
-	public String getDate() {
-		return date;
-	}
-
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	@Column(name="status")

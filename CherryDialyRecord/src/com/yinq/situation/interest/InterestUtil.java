@@ -33,7 +33,7 @@ public class InterestUtil {
 		Session session = HibernateUtil.getSession();
 		Transaction transaction=session.beginTransaction(); 
 		List<InterestCateModel> cateModels = null;
-		ArrayList<InterestCateModel> retModels = new ArrayList<InterestCateModel>();
+		ArrayList<InterestCateModel> retModels = null;
 		try {
 			String sql = "Select e from " + InterestCateModel.class.getName() + " e ";
 			// Create Query object.
@@ -42,8 +42,8 @@ public class InterestUtil {
 
 	        // Execute query.
 	        cateModels = query.getResultList();
-	        
-	        for (InterestCateModel cateModel : retModels) {
+	        retModels = new ArrayList<InterestCateModel>();
+	        for (InterestCateModel cateModel : cateModels) {
 				retModels.add(new InterestCateModel(cateModel));
 			}
 		} catch (Exception e) {
@@ -85,64 +85,6 @@ public class InterestUtil {
 		return retModels;
 	}
 	
-	protected int addInterestSituaton(InterestSituationModel model) {
-		int retCode = 0;
-		if (model == null) {
-			retCode = RespError.urlInvalidParamError;
-			return retCode;
-		}
-		
-		if (model.getDate() == null || model.getDate().length() == 0) {
-			retCode = RespError.urlInvalidParamError;
-			return retCode;
-		}
-		
-		if (model.getId() == null || model.getId().length() == 0) {
-			retCode = RespError.urlInvalidParamError;
-			return retCode;
-		}
-		
-		Session session = HibernateUtil.getSession();
-		Transaction transaction=session.beginTransaction(); 
-		//查询是否已经存在
-		Long count = new Long(0);
-		try {
-			String sql = "Select count(*) from " + InterestSituationModel.class.getName() + " e " + " where e.date=:date and e.cate.cateId=:cateId";
-			
-			Query<Long> query = session.createQuery(sql);
-			query.setParameter("date", model.getDate());
-			query.setParameter("cateId", model.getCate().getCateId());
-			
-			count = query.uniqueResult();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-	        // Rollback in case of an error occurred.
-	        session.getTransaction().rollback();
-	        session.close();
-	        return RespError.databaseError;
-		}
-		
-		if (count.intValue() > 0) {
-			return RespError.situationHasBeenExisted;
-		}
-		
-		try {
-			//session.persist(model);//persisting the object  
-			session.save(model);
-			transaction.commit();//transaction is committed  
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-	        // Rollback in case of an error occurred.
-	        session.getTransaction().rollback();
-	        session.close();
-	        return RespError.databaseError;
-		}
-		session.close();
-		return retCode;
-	}
-	
 	public HttpRespModel getAllInterestList() {
 		HttpRespModel respModel = new HttpRespModel();
 		
@@ -157,48 +99,5 @@ public class InterestUtil {
 		return respModel;
 	}
 	
-	public HttpRespModel getTodayInterestSituations() {
-		HttpRespModel respModel = new HttpRespModel();
-		
-		SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-		String dateStr = ft.format(new Date());
-		
-		List<InterestSituationModel> situationModels = interestSituationModels(dateStr);
-		ArrayList<InterestSituationModel> retModels = new ArrayList<InterestSituationModel>();
-		
-		for (InterestSituationModel interestSituationModel : situationModels) {
-			
-			retModels.add(new InterestSituationModel(interestSituationModel));
-		}
-		respModel.setResult(retModels);
-		return respModel;
-	}
 	
-	public HttpRespModel appendInterestSituation(InterestSituationModel model) {
-		HttpRespModel respModel = new HttpRespModel();
-		int retCode = addInterestSituaton(model);
-		if (retCode != 0) {
-			switch (retCode) {
-			case RespError.urlInvalidParamError:{
-				respModel.setMessage("对不起，你输入的参数错误。");
-				break;
-			}
-			case RespError.databaseError:{
-				respModel.setMessage("对不起，数据库操作错误。");
-				break;
-			}
-			case RespError.situationHasBeenExisted:{
-				respModel.setMessage("对不起，数据已经存在，不能重复添加。");
-				break;
-			}
-			default:
-				break;
-			}
-		}
-		else {
-			respModel.setResult(model);
-		}
-		
-		return respModel;
-	}
 }
