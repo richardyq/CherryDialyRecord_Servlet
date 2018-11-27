@@ -11,7 +11,6 @@
   </welcome-file-list>
   
   <servlet>
-    
     <servlet-name>CherryRecord</servlet-name><!--// 类的别名 -->
     <servlet-class>com.yinq.servlet.CherryRecordServlet</servlet-class><!--// 类的名称 -->
   </servlet>

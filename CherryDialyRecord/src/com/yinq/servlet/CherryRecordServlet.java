@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yinq.datamodel.RespError;
+import com.yinq.history.HistoryMethodDispatcher;
 import com.yinq.situation.dispatcher.SituationMethodDispatcher;
 import com.yinq.user.dispatcher.UserMethodDispatcher;
 
@@ -90,6 +91,11 @@ public class CherryRecordServlet extends HttpServlet {
 		}
 		case SituationService:{
 			SituationMethodDispatcher dispatcher = new SituationMethodDispatcher();
+			model = dispatcher.methodDispatch(method, body);
+			break;
+		}
+		case HistoryService:{
+			HistoryMethodDispatcher dispatcher = new HistoryMethodDispatcher();
 			model = dispatcher.methodDispatch(method, body);
 			break;
 		}
