@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 	
-	private HibernateUtil(){
+	public HibernateUtil(){
 	}
 	
 	// 1.创建工厂对象;
