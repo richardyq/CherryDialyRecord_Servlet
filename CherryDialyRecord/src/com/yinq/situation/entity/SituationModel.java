@@ -126,6 +126,7 @@ public class SituationModel extends JsonModel {
 				hasBeenExisted = true;
 			}
 			session.close();
+			break;
 		}
 		case 3:{
 			//兴趣学习情况
@@ -148,6 +149,7 @@ public class SituationModel extends JsonModel {
 				hasBeenExisted = true;
 			}
 			session.close();
+			break;
 		}
 		default:
 			break;

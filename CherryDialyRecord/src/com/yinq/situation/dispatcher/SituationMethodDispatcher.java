@@ -88,7 +88,14 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		
 		SituationUtil util = new SituationUtil();
 		MealSituationParam param = (MealSituationParam)new MealSituationParam().fromJson(body);
+		
 		SituationModel model = util.createMealSituationModel(param);
+		
+		if (model == null) {
+			respModel.setCode(util.getErrorCode());
+			respModel.setMessage(util.getMessage());
+			return respModel;
+		}
 		if (model.hasBeenExisted()) {
 			respModel.setCode(RespError.situationHasBeenExisted);
 			respModel.setMessage("对不起，数据已经存在");
