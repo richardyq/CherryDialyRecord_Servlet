@@ -49,6 +49,12 @@ public class SituationUtil {
 			return recordModel;
 		}
 		
+		if (param.getKidId() == 0) {
+			setErrorCode(RespError.urlInvalidParamError);
+			setMessage("对不起，你输入的kidId参数不正确。");
+			return recordModel;
+		}
+		
 		if (param.getDate() == null || param.getDate().isEmpty()) {
 			setErrorCode(RespError.urlInvalidParamError);
 			setMessage("对不起，你输入的日期参数不正确。");
@@ -59,6 +65,7 @@ public class SituationUtil {
 		SituationRecordModel record = new SituationRecordModel(param.getUserId()); 
 		record.setDate(param.getDate());
 		record.setType(1);
+		record.setKidId(param.getKidId());
 		
 		recordModel = new SituationModel(record);
 		MealSituationModel detModel = new MealSituationModel(param);
@@ -68,7 +75,7 @@ public class SituationUtil {
 		return recordModel;
 	}
 	
-	public ArrayList<SituationModel> getMealSituationsFromDate(String date){
+	public ArrayList<SituationModel> getMealSituationsFromDate(String date, int kidId){
 		ArrayList<SituationModel> models = null;
 		setErrorCode(0);
 		setMessage(null);
@@ -78,7 +85,7 @@ public class SituationUtil {
 			return models;
 		}
 		
-		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 1);
+		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 1, kidId);
 		models = new ArrayList<SituationModel>();
 		Session session = HibernateUtil.getSession();
 		try {
@@ -104,7 +111,7 @@ public class SituationUtil {
 		return models;
 	}
 	
-	public ArrayList<SituationModel> getSleepSituationsFromDate(String date) {
+	public ArrayList<SituationModel> getSleepSituationsFromDate(String date, int kidId) {
 		ArrayList<SituationModel> models = null;
 		setErrorCode(0);
 		setMessage(null);
@@ -114,7 +121,7 @@ public class SituationUtil {
 			return models;
 		}
 		
-		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 2);
+		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 2, kidId);
 		models = new ArrayList<SituationModel>();
 		Session session = HibernateUtil.getSession();
 		try {
@@ -138,7 +145,7 @@ public class SituationUtil {
 		return models;
 	}
 	
-	public ArrayList<SituationModel> getInterestSituationFromDate(String date) {
+	public ArrayList<SituationModel> getInterestSituationFromDate(String date, int kidId) {
 		ArrayList<SituationModel> models = null;
 		setErrorCode(0);
 		setMessage(null);
@@ -148,7 +155,7 @@ public class SituationUtil {
 			return models;
 		}
 		
-		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 3);
+		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 3, kidId);
 		models = new ArrayList<SituationModel>();
 		Session session = HibernateUtil.getSession();
 		try {
@@ -172,18 +179,25 @@ public class SituationUtil {
 		return models;
 	}
 	
-	public ArrayList<SituationRecordModel> getSituationRecorModels(String date, int type) {
+	public ArrayList<SituationRecordModel> getSituationRecorModels(String date, int type, int kidId) {
 		setErrorCode(0);
 		setMessage(null);
+		
+		if (kidId == 0) {
+			setErrorCode(RespError.urlInvalidParamError);
+			setMessage("对不起，你输入的kidId错误。");
+			return null;
+		}
 		
 		ArrayList<SituationRecordModel> records = null;
 		Session session = HibernateUtil.getSession();
 		try {
 			String sql = "select e from " + SituationRecordModel.class.getName() +
-					" e where date=:date and type=:type "+ "order by updateTime desc";
+					" e where date=:date and type=:type and kidId=:kidId "+ "order by updateTime desc";
 			Query<SituationRecordModel> query = session.createQuery(sql);
 			query.setParameter("date", date);
 			query.setParameter("type", type);
+			query.setParameter("kidId", kidId);
 			
 			List<SituationRecordModel> models = query.getResultList();
 			records = new ArrayList<SituationRecordModel>();
@@ -218,6 +232,12 @@ public class SituationUtil {
 			setMessage("对不起，你输入的userId参数不正确。");
 			return resultModel;
 		}
+		
+		if (param.getKidId() == 0) {
+			setErrorCode(RespError.urlInvalidParamError);
+			setMessage("对不起，你输入的kidId参数不正确。");
+			return resultModel;
+		}
 				
 		if (param.getDate() == null || param.getDate().isEmpty()) {
 			setErrorCode(RespError.urlInvalidParamError);
@@ -228,6 +248,7 @@ public class SituationUtil {
 		SituationRecordModel record = new SituationRecordModel(param.getUserId()); 
 		record.setDate(param.getDate());
 		record.setType(2);
+		record.setKidId(param.getKidId());
 		resultModel = new SituationModel(record);
 		SleepSituationModel model = new SleepSituationModel(param);
 		model.setId(record.getId());
@@ -253,6 +274,12 @@ public class SituationUtil {
 			setMessage("对不起，你输入的userId参数不正确。");
 			return resultModel;
 		}
+		
+		if (param.getKidId() == 0) {
+			setErrorCode(RespError.urlInvalidParamError);
+			setMessage("对不起，你输入的kidId参数不正确。");
+			return resultModel;
+		}
 						
 		if (param.getDate() == null || param.getDate().isEmpty()) {
 			setErrorCode(RespError.urlInvalidParamError);
@@ -263,6 +290,7 @@ public class SituationUtil {
 		SituationRecordModel record = new SituationRecordModel(param.getUserId()); 
 		record.setDate(param.getDate());
 		record.setType(3);
+		record.setKidId(param.getKidId());
 		resultModel = new SituationModel(record);
 		InterestSituationModel model = new InterestSituationModel(param.getCateId(), param.getStatus());
 		model.setId(record.getId());

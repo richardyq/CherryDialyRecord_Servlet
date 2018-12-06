@@ -9,6 +9,7 @@ public class HistoryRequestParam extends JsonModel{
 	private int type;
 	private String startDate;
 	private String endDate;
+	private int kidId;
 	
 	public HistoryRequestParam() {
 		// TODO Auto-generated constructor stub
@@ -52,5 +53,13 @@ public class HistoryRequestParam extends JsonModel{
 
 	public void setCode(int type) {
 		this.type = type;
+	}
+
+	public int getKidId() {
+		return kidId;
+	}
+
+	public void setKidId(int kidId) {
+		this.kidId = kidId;
 	}
 }

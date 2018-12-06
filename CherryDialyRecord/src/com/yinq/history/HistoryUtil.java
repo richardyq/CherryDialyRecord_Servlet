@@ -48,16 +48,49 @@ public class HistoryUtil {
 		return count;
 	}
 	
-	public Long recordDateCount(int type) {
+	public Long recordDateCount(int type, String startDate, String endDate) {
 		Session session = HibernateUtil.getSession();
 		String sql = "select count(distinct e.date) from " + SituationRecordModel.class.getName() + " e";
+		String conditionStr = " where";
+		Boolean needCondition = false;
 		if (type > 0) {
-			sql += " where type=:type";
+			conditionStr += " type=:type";
+			needCondition = true;
+		}
+		if (startDate != null && startDate.isEmpty() == false) {
+			if (needCondition == false) {
+				conditionStr = " where";
+				needCondition = true;
+			}
+			else {
+				conditionStr += " and";
+			}
+			conditionStr += " date >=:startDate";
+		}
+		if (endDate != null && endDate.isEmpty() == false) {
+			if (needCondition == false) {
+				conditionStr = " where";
+				needCondition = true;
+			}
+			else {
+				conditionStr += " and";
+			}
+			conditionStr += " date <=:endDate";
+		}
+		
+		if (needCondition) {
+			sql += conditionStr;
 		}
 		Long count = new Long(0);
 		Query<Long> query = session.createQuery(sql);
 		if (type > 0) {
 			query.setParameter("type", type);
+		}
+		if (startDate != null && startDate.isEmpty() == false) {
+			query.setParameter("startDate", startDate);
+		}
+		if (endDate != null && endDate.isEmpty() == false) {
+			query.setParameter("endDate", endDate);
 		}
 		try {
 			count = query.uniqueResult();
@@ -76,6 +109,7 @@ public class HistoryUtil {
 		Session session = HibernateUtil.getSession();
 		String sql = "select e from " + SituationRecordModel.class.getName() + " e order by e.updateTime desc";
 		Query<SituationRecordModel> query = session.createQuery(sql);
+		
 		query.setFirstResult(startRow);
 		query.setMaxResults(rows);
 		try {
@@ -97,20 +131,40 @@ public class HistoryUtil {
 		return recordModels;
 	}
 	
-	public ArrayList<String> recordDateList(int startRow, int rows, int type){
+	public ArrayList<String> recordDateList(int startRow, int rows, int type, String startDate, String endDate, int kidId){
 		ArrayList<String> dates = null;
 		Session session = HibernateUtil.getSession();
 		
 		String sql = "select distinct e.date from " + SituationRecordModel.class.getName() + " e";
+		String conditionStr = " where kidId=:kidId";
+		
 		if (type > 0) {
-			sql += " where e.type=:type";
+			
+			conditionStr += "and e.type=:type";
 		}
+		if (startDate != null && startDate.isEmpty() == false) {
+			
+			conditionStr += " and date >=:startDate";
+		}
+		if (endDate != null && endDate.isEmpty() == false) {
+			
+			conditionStr += " and date <=:endDate";
+		}
+		
+		sql += conditionStr;
 		sql += " order by e.date desc";
 		Query<String> query = session.createQuery(sql);
 		query.setFirstResult(startRow);
 		query.setMaxResults(rows);
+		query.setParameter("kidId", kidId);
 		if (type > 0) {
 			query.setParameter("type", type);
+		}
+		if (startDate != null && startDate.isEmpty() == false) {
+			query.setParameter("startDate", startDate);
+		}
+		if (endDate != null && endDate.isEmpty() == false) {
+			query.setParameter("endDate", endDate);
 		}
 		try {
 			List<String> dateList = query.getResultList();
@@ -128,7 +182,7 @@ public class HistoryUtil {
 		return dates;
 	}
 	
-	public ArrayList<SituationRecordModel> recordsFormDate(String date){
+	public ArrayList<SituationRecordModel> recordsFormDate(String date, int kidId){
 		if (date == null || date.isEmpty()) {
 			setErrorCode(RespError.urlInvalidParamError);
 			setMessage("对不起，你传人的日期参数错误。");
@@ -137,9 +191,10 @@ public class HistoryUtil {
 		ArrayList<SituationRecordModel> records = null;
 		Session session = HibernateUtil.getSession();
 		String sql = "select e from " + SituationRecordModel.class.getName() + " e ";
-		sql += "where e.date=:date";
+		sql += "where e.date=:date and e.kidId=:kidId";
 		Query<SituationRecordModel> query = session.createQuery(sql);
 		query.setParameter("date", date);
+		query.setParameter("kidId", kidId);
 		try {
 			List<SituationRecordModel> recordModels = query.getResultList();
 			if (recordModels != null) {
@@ -158,9 +213,9 @@ public class HistoryUtil {
 		return records;
 	}
 	
-	public DailySituationModel dailySituationModel(String date, int type) {
+	public DailySituationModel dailySituationModel(String date, int type, int kidId) {
 		DailySituationModel dailySituationModel = null;
-		ArrayList<SituationRecordModel> recordModels = recordsFormDate(date);
+		ArrayList<SituationRecordModel> recordModels = recordsFormDate(date, kidId);
 		
 		if (recordModels == null) {
 			return dailySituationModel;

@@ -19,6 +19,7 @@ public class UserModel extends JsonModel {
 	private String relation;
 	private int gender;
 	private String portraitUrl;
+	private int kidId;
 	
 	public UserModel() {
 		
@@ -84,6 +85,15 @@ public class UserModel extends JsonModel {
 
 	public void setPortraitUrl(String portraitUrl) {
 		this.portraitUrl = portraitUrl;
+	}
+
+	@Column(name="kidId")
+	public int getKidId() {
+		return kidId;
+	}
+
+	public void setKidId(int kidId) {
+		this.kidId = kidId;
 	}
 	
 	

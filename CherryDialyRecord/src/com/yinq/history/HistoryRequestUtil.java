@@ -28,10 +28,11 @@ public class HistoryRequestUtil {
 		HttpRespModel respModel = new HttpRespModel();
 		HistorySituationRetModel retModel = new HistorySituationRetModel();
 		
-		Long dateCount = util.recordDateCount(param.getType());
+		Long dateCount = util.recordDateCount(param.getType(), param.getStartDate(), param.getEndDate());
 		retModel.setCount(dateCount.intValue());
 		
-		ArrayList<String> dates = util.recordDateList(param.getStartRow(), param.getRows(), param.getType());
+		ArrayList<String> dates = util.recordDateList(param.getStartRow(), param.getRows(), param.getType(),
+				param.getStartDate(), param.getEndDate(), param.getKidId());
 		if (util.getErrorCode() != 0) {
 			respModel.setCode(util.getErrorCode());
 			respModel.setMessage(util.getMessage());
@@ -39,7 +40,7 @@ public class HistoryRequestUtil {
 		}
 		
 		for (String date : dates) {
-			DailySituationModel model = util.dailySituationModel(date, param.getType());
+			DailySituationModel model = util.dailySituationModel(date, param.getType(), param.getKidId());
 			if (util.getErrorCode() != 0) {
 				respModel.setCode(util.getErrorCode());
 				respModel.setMessage(util.getMessage());

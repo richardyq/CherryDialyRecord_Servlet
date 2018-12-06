@@ -8,6 +8,7 @@ public class InterestSituationParam extends JsonModel{
 	private int cateId;
 	private int status;
 	private String userId;
+	private int kidId;
 	
 	
 	public String getDate() {
@@ -33,6 +34,12 @@ public class InterestSituationParam extends JsonModel{
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public int getKidId() {
+		return kidId;
+	}
+	public void setKidId(int kidId) {
+		this.kidId = kidId;
 	}
 	
 	

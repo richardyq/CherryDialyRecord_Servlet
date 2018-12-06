@@ -50,6 +50,14 @@ public class UserMethodDispatcher implements MethodDispatcher {
 			respModel = util.getUserInfo(paramUser);
 			break;
 		}
+		case KidInfoMethod:{
+			//获取幼儿信息
+			System.out.println("KidInfoMethod -----");
+			
+			KidUtil util = new KidUtil();
+			respModel = util.getKidInfoMethod(body);
+			break;
+		}
 		default:
 		{
 			respModel.setCode(RespError.urlMethodError);

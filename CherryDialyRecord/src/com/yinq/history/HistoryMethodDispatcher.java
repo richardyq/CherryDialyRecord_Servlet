@@ -1,16 +1,10 @@
 package com.yinq.history;
-
-import java.util.ArrayList;
-
-import com.mysql.cj.log.Log;
-import com.mysql.cj.protocol.Message;
-import com.sun.media.sound.SoftInstrument;
 import com.yinq.datamodel.RespError;
 import com.yinq.history.model.DailySituationModel;
 import com.yinq.history.model.HistoryRequestParam;
 import com.yinq.servlet.HttpRespModel;
 import com.yinq.servlet.MethodDispatcher;
-import com.yinq.situation.entity.SituationRecordModel;
+
 
 
 public class HistoryMethodDispatcher implements MethodDispatcher {
@@ -57,7 +51,7 @@ public class HistoryMethodDispatcher implements MethodDispatcher {
 			respModel.setResult(dates);
 			*/
 			
-			DailySituationModel model = util.dailySituationModel("2018-11-23", 0);
+			DailySituationModel model = util.dailySituationModel("2018-11-23", 0, 1);
 			respModel.setCode(util.getErrorCode());
 			respModel.setMessage(util.getMessage());
 			respModel.setResult(model);

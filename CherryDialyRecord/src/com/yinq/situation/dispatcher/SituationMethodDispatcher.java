@@ -20,6 +20,8 @@ import com.yinq.situation.entity.SleepSituationParam;
 import com.yinq.situation.interest.InterestUtil;
 
 import com.yinq.situation.util.SituationUtil;
+import com.yinq.user.KidUtil;
+import com.yinq.user.KidUtil.KidParam;
 
 public class SituationMethodDispatcher implements MethodDispatcher{
 
@@ -40,7 +42,7 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		}
 		case TodayMealSituationMethod:{
 			//获取当天吃饭记录
-			respModel = getTodayMealSituations();
+			respModel = getTodayMealSituations(body);
 			break;
 		}
 		case AddSleepSituationMethod:{
@@ -51,7 +53,7 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		}
 		case TodaySleepSituationMethod:{
 			//获取当天睡觉情况记录
-			respModel = getTodaySleepSituations();
+			respModel = getTodaySleepSituations(body);
 			break;
 		}
 		case InterestCateList:{
@@ -61,7 +63,7 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 			break;
 		}
 		case TodayInterestSituationMethod:{
-			respModel = getTodayInterestSituations();
+			respModel = getTodayInterestSituations(body);
 			break;
 		}
 		case AddInterestSituationMethod:{
@@ -139,12 +141,15 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 	 * getTodayMealSituations
 	 * 获取今天的吃饭情况
 	 */
-	public HttpRespModel getTodayMealSituations() {
+	public HttpRespModel getTodayMealSituations(String body) {
 		HttpRespModel respModel = new HttpRespModel();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String dateStr = format.format(new Date());
 		SituationUtil util = new SituationUtil();
-		ArrayList<SituationModel> models = util.getMealSituationsFromDate(dateStr);
+		
+	    KidUtil.KidParam param = (KidUtil.KidParam) new KidUtil.KidParam().fromJson(body);
+		
+		ArrayList<SituationModel> models = util.getMealSituationsFromDate(dateStr, param.getId());
 		if (models == null) {
 			respModel.setCode(util.getErrorCode());
 			respModel.setMessage(util.getMessage());
@@ -212,13 +217,14 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 	 * getTodaySleepSituations
 	 * 获取当天的睡觉情况
 	 */
-	public HttpRespModel getTodaySleepSituations() {
+	public HttpRespModel getTodaySleepSituations(String body) {
 		HttpRespModel respModel = new HttpRespModel();
 		SituationUtil util = new SituationUtil();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String dateStr = format.format(new Date());
 		
-		ArrayList<SituationModel> models = util.getSleepSituationsFromDate(dateStr);
+		KidUtil.KidParam param = (KidUtil.KidParam) new KidUtil.KidParam().fromJson(body);
+		ArrayList<SituationModel> models = util.getSleepSituationsFromDate(dateStr, param.getId());
 		if (models == null) {
 			respModel.setCode(util.getErrorCode());
 			respModel.setMessage(util.getMessage());
@@ -284,13 +290,14 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 	 * getTodayInterestSituations
 	 * 获取当天所有兴趣学习情况
 	 */
-	public HttpRespModel getTodayInterestSituations() {
+	public HttpRespModel getTodayInterestSituations(String body) {
 		HttpRespModel respModel = new HttpRespModel();
 		SituationUtil util = new SituationUtil();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String dateStr = format.format(new Date());
 		
-		ArrayList<SituationModel> models = util.getInterestSituationFromDate(dateStr);
+		KidUtil.KidParam param = (KidUtil.KidParam) new KidUtil.KidParam().fromJson(body);
+		ArrayList<SituationModel> models = util.getInterestSituationFromDate(dateStr, param.getId());
 		if (models == null) {
 			respModel.setCode(util.getErrorCode());
 			respModel.setMessage(util.getMessage());

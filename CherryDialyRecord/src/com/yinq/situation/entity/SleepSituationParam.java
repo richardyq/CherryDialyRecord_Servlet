@@ -6,7 +6,7 @@ public class SleepSituationParam extends JsonModel {
 
 	private String date;
 	private String userId;
-	
+	private int kidId;
 	private int code;
 	private int status;
 	
@@ -37,5 +37,13 @@ public class SleepSituationParam extends JsonModel {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public int getKidId() {
+		return kidId;
+	}
+
+	public void setKidId(int kidId) {
+		this.kidId = kidId;
 	}
 }

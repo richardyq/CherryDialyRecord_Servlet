@@ -10,6 +10,7 @@ public class MealSituationParam extends JsonModel {
 	private int amount;
 	private int feed;
 	private String userId;
+	private int kidId;
 	
 	public String getDate() {
 		return date;
@@ -46,5 +47,11 @@ public class MealSituationParam extends JsonModel {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public int getKidId() {
+		return kidId;
+	}
+	public void setKidId(int kidId) {
+		this.kidId = kidId;
 	}
 }

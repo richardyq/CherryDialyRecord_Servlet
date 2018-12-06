@@ -25,6 +25,7 @@ public class SituationRecordModel {
 	private UserSummaryModel user;
 	private int type;
 	private String updateTime;
+	private int kidId;
 	
 	public SituationRecordModel() {
 		// TODO Auto-generated constructor stub
@@ -110,5 +111,14 @@ public class SituationRecordModel {
 
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	@Column(name="kidId")
+	public int getKidId() {
+		return kidId;
+	}
+
+	public void setKidId(int kidId) {
+		this.kidId = kidId;
 	}
 }

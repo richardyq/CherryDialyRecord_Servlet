@@ -4,6 +4,7 @@ package com.yinq.user;
 public enum UserMethod {
 	LoginMethod("login"),
 	UserInfoMethod("getUserInfo"),
+	KidInfoMethod("getKidInfo"),
 	UnkonwnMethod("Unkonwn");
 	
 	private String name;
