@@ -48,41 +48,28 @@ public class HistoryUtil {
 		return count;
 	}
 	
-	public Long recordDateCount(int type, String startDate, String endDate) {
+	public Long recordDateCount(int type, int kidId, String startDate, String endDate) {
 		Session session = HibernateUtil.getSession();
 		String sql = "select count(distinct e.date) from " + SituationRecordModel.class.getName() + " e";
-		String conditionStr = " where";
-		Boolean needCondition = false;
+		String conditionStr = " where e.kidId=:kidId";
+		
 		if (type > 0) {
-			conditionStr += " type=:type";
-			needCondition = true;
+			conditionStr += " and type=:type";
+			
 		}
 		if (startDate != null && startDate.isEmpty() == false) {
-			if (needCondition == false) {
-				conditionStr = " where";
-				needCondition = true;
-			}
-			else {
-				conditionStr += " and";
-			}
-			conditionStr += " date >=:startDate";
+			
+			conditionStr += "  and date >=:startDate";
 		}
 		if (endDate != null && endDate.isEmpty() == false) {
-			if (needCondition == false) {
-				conditionStr = " where";
-				needCondition = true;
-			}
-			else {
-				conditionStr += " and";
-			}
-			conditionStr += " date <=:endDate";
+			
+			conditionStr += "  and date <=:endDate";
 		}
 		
-		if (needCondition) {
-			sql += conditionStr;
-		}
+		sql += conditionStr;
 		Long count = new Long(0);
 		Query<Long> query = session.createQuery(sql);
+		query.setParameter("kidId", kidId);
 		if (type > 0) {
 			query.setParameter("type", type);
 		}
@@ -140,7 +127,7 @@ public class HistoryUtil {
 		
 		if (type > 0) {
 			
-			conditionStr += "and e.type=:type";
+			conditionStr += " and type=:type";
 		}
 		if (startDate != null && startDate.isEmpty() == false) {
 			

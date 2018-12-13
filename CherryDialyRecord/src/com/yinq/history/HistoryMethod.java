@@ -4,6 +4,10 @@ package com.yinq.history;
 public enum HistoryMethod {
 
 	RecordListMethod("recordList"),
+	StatisticsMethod("statistics"),
+	MealStatisticsMethod("mealStatistics"),
+	SleepStatisticsMethod("sleepStatistics"),
+	InterestStatisticsMethod("interestStatistics"),
 	RecordTestMethod("test"),
 	UnkonwnMethod("Unkonwon");
 	

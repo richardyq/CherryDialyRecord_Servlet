@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yinq.datamodel.RespError;
+import com.yinq.funny.dispatcher.FunnyMethodDispatcher;
 import com.yinq.history.HistoryMethodDispatcher;
 import com.yinq.situation.dispatcher.SituationMethodDispatcher;
 import com.yinq.user.dispatcher.UserMethodDispatcher;
@@ -46,7 +47,7 @@ public class CherryRecordServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		super.doPost(req, resp);
-		
+		request.setCharacterEncoding("UTF-8");
 		//参数列表
 		Enumeration<String> pNames=request.getParameterNames();
 		while(pNames.hasMoreElements()){
@@ -67,7 +68,7 @@ public class CherryRecordServlet extends HttpServlet {
         byte[] bytes = new byte[totalBytes]; 
         dataInputStream.readFully(bytes); 
         dataInputStream.close();
-        String body = new String(bytes);
+        String body = new String(bytes, "utf-8");
         System.out.println("body = " + body);
         
         HttpRespModel respModel = dispatchService(service, method, body);
@@ -96,6 +97,11 @@ public class CherryRecordServlet extends HttpServlet {
 		}
 		case HistoryService:{
 			HistoryMethodDispatcher dispatcher = new HistoryMethodDispatcher();
+			model = dispatcher.methodDispatch(method, body);
+			break;
+		}
+		case FunnyService:{
+			FunnyMethodDispatcher dispatcher = new FunnyMethodDispatcher();
 			model = dispatcher.methodDispatch(method, body);
 			break;
 		}

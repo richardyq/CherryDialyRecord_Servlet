@@ -4,6 +4,7 @@ public enum HttpRequestService {
 	UserService("userService"),
 	SituationService("situationService"),
 	HistoryService("historyService"),
+	FunnyService("funnyService"),
 	UnKnownService("Error.");
 	
 	private String name;

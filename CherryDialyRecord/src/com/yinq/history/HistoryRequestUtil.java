@@ -28,7 +28,7 @@ public class HistoryRequestUtil {
 		HttpRespModel respModel = new HttpRespModel();
 		HistorySituationRetModel retModel = new HistorySituationRetModel();
 		
-		Long dateCount = util.recordDateCount(param.getType(), param.getStartDate(), param.getEndDate());
+		Long dateCount = util.recordDateCount(param.getType(), param.getKidId(), param.getStartDate(), param.getEndDate());
 		retModel.setCount(dateCount.intValue());
 		
 		ArrayList<String> dates = util.recordDateList(param.getStartRow(), param.getRows(), param.getType(),

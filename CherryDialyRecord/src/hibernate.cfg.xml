@@ -25,6 +25,7 @@
 		<mapping class="com.yinq.situation.entity.InterestSituationModel"/>
 		 
 		<mapping class="com.yinq.situation.entity.SituationRecordModel"/>
+		<mapping class="com.yinq.funny.entity.FunnyModel"/>
 
     </session-factory>
 

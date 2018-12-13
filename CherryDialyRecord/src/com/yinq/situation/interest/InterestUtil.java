@@ -28,7 +28,7 @@ public class InterestUtil {
 		// TODO Auto-generated constructor stub
 	}
 	
-	protected ArrayList<InterestCateModel> allInterestList(){
+	public ArrayList<InterestCateModel> allInterestList(){
 		
 		Session session = HibernateUtil.getSession();
 		Transaction transaction=session.beginTransaction(); 

@@ -26,35 +26,49 @@ public class HistoryMethodDispatcher implements MethodDispatcher {
 			respModel = util.getDailySituations(param);
 			break;
 		}
+		case StatisticsMethod:{
+			HistoryRequestParam param = null;
+			if (body != null && !body.isEmpty()) {
+				param = (HistoryRequestParam) new HistoryRequestParam().fromJson(body);
+			}
+			StatisticsRequestUtil util = new StatisticsRequestUtil();
+			respModel = util.getTotalStatistics(param);
+			break;
+		}
+		case MealStatisticsMethod:{
+			HistoryRequestParam param = null;
+			if (body != null && !body.isEmpty()) {
+				param = (HistoryRequestParam) new HistoryRequestParam().fromJson(body);
+			}
+			StatisticsRequestUtil util = new StatisticsRequestUtil();
+			respModel = util.mealStatisticsInMonths(param);
+			break;
+		}
+		case SleepStatisticsMethod:{
+			HistoryRequestParam param = null;
+			if (body != null && !body.isEmpty()) {
+				param = (HistoryRequestParam) new HistoryRequestParam().fromJson(body);
+			}
+			StatisticsRequestUtil util = new StatisticsRequestUtil();
+			respModel = util.sleepStatisticsInMonths(param);
+			break;
+		}
+		case InterestStatisticsMethod:{
+			HistoryRequestParam param = null;
+			if (body != null && !body.isEmpty()) {
+				param = (HistoryRequestParam) new HistoryRequestParam().fromJson(body);
+			}
+			StatisticsRequestUtil util = new StatisticsRequestUtil();
+			respModel = util.interestStatisticsInMonth(param);
+			break; 
+		}
 		case RecordTestMethod:{
-			
-			HistoryUtil util = new HistoryUtil();
-			/*
-//			Long count = util.totalRecordsCount();
-			Long count = util.recordDateCount();
-			respModel.setCode(util.getErrorCode());
-			respModel.setMessage(util.getMessage());
-			respModel.setResult(count);
-			*/
-			
-			/*
-			ArrayList<SituationRecordModel> recordModels = util.recordsFormDate("2018-11-23");
-			respModel.setCode(util.getErrorCode());
-			respModel.setMessage(util.getMessage());
-			respModel.setResult(recordModels);
-			*/
-			
-			/*
-			ArrayList<String> dates = util.recordDateList(0, 7);
-			respModel.setCode(util.getErrorCode());
-			respModel.setMessage(util.getMessage());
-			respModel.setResult(dates);
-			*/
-			
-			DailySituationModel model = util.dailySituationModel("2018-11-23", 0, 1);
-			respModel.setCode(util.getErrorCode());
-			respModel.setMessage(util.getMessage());
-			respModel.setResult(model);
+			HistoryRequestParam param = null;
+			if (body != null && !body.isEmpty()) {
+				param = (HistoryRequestParam) new HistoryRequestParam().fromJson(body);
+			}
+			StatisticsRequestUtil util = new StatisticsRequestUtil();
+			respModel = util.testMethod(param);
 			break;
 		}
 		default:
