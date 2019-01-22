@@ -113,6 +113,9 @@ public class InterestStatisticsUtil {
 		for (InterestCateModel interestCateModel : cates) {
 			InterestStatisticsDetModel detModel = getInterestStatisticDet(kidId, month, interestCateModel.getCateId());
 			detModel.setCateName(interestCateModel.getName());
+			if (detModel.getGoodCount() == 0 && detModel.getNormalCount() == 0 && detModel.getLowCount() == 0) {
+				continue;
+			}
 			statisticsModel.getDetModels().add(detModel);
 		}
 		return statisticsModel;

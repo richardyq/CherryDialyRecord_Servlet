@@ -145,10 +145,14 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		HttpRespModel respModel = new HttpRespModel();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String dateStr = format.format(new Date());
+		
 		SituationUtil util = new SituationUtil();
 		
 	    KidUtil.KidParam param = (KidUtil.KidParam) new KidUtil.KidParam().fromJson(body);
-		
+		if (param.getDate() != null && param.getDate().length() > 0) {
+			dateStr = param.getDate();
+		}
+	    
 		ArrayList<SituationModel> models = util.getMealSituationsFromDate(dateStr, param.getId());
 		if (models == null) {
 			respModel.setCode(util.getErrorCode());
@@ -224,6 +228,9 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		String dateStr = format.format(new Date());
 		
 		KidUtil.KidParam param = (KidUtil.KidParam) new KidUtil.KidParam().fromJson(body);
+		if (param.getDate() != null && param.getDate().length() > 0) {
+			dateStr = param.getDate();
+		}
 		ArrayList<SituationModel> models = util.getSleepSituationsFromDate(dateStr, param.getId());
 		if (models == null) {
 			respModel.setCode(util.getErrorCode());
@@ -297,6 +304,9 @@ public class SituationMethodDispatcher implements MethodDispatcher{
 		String dateStr = format.format(new Date());
 		
 		KidUtil.KidParam param = (KidUtil.KidParam) new KidUtil.KidParam().fromJson(body);
+		if (param.getDate() != null && param.getDate().length() > 0) {
+			dateStr = param.getDate();
+		}
 		ArrayList<SituationModel> models = util.getInterestSituationFromDate(dateStr, param.getId());
 		if (models == null) {
 			respModel.setCode(util.getErrorCode());

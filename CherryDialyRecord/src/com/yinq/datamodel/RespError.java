@@ -16,7 +16,7 @@ public class RespError {
 	public static final int userPasswordError = 0x30002;
 	//用户信息没有找到
 	public static final int userNotFound = 0x30003;
-	
+	public static final int userHasBeenExisted = 0x30004;
 	
 	
 	public static final int situationHasBeenExisted = 0x40001;

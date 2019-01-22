@@ -4,6 +4,7 @@ package com.yinq.user.dispatcher;
 import com.yinq.datamodel.RespError;
 import com.yinq.servlet.HttpRespModel;
 import com.yinq.user.*;
+import com.yinq.user.entity.RegisterParam;
 import com.yinq.user.entity.UserAccount;
 import com.yinq.user.entity.UserModel;
 import com.yinq.servlet.MethodDispatcher;
@@ -35,6 +36,32 @@ public class UserMethodDispatcher implements MethodDispatcher {
 			return util.userLogin(paramAccount);
 			
 //			break;
+		}
+		case ValidLoginAccount:{
+			UserAccount paramAccount = null;
+			paramAccount =  (UserAccount) new UserAccount().fromJson(body);
+			if (paramAccount == null ||
+					paramAccount.getAccount() == null ||
+					paramAccount.getAccount().isEmpty()) {
+				respModel.setCode(RespError.urlInvalidParamError);
+				respModel.setMessage("对不起,您输入的account参数不正确。");
+				break;
+			}
+			UserAccountUtil util = new UserAccountUtil();
+			respModel = util.validLoginAccount(paramAccount.getAccount());
+			break;
+		}
+		case RegisterMethod:{
+			RegisterParam param = (RegisterParam) new RegisterParam().fromJson(body);
+			if (param == null ||
+					param.getAccount() == null || param.getAccount().isEmpty()) {
+				respModel.setCode(RespError.urlInvalidParamError);
+				respModel.setMessage("对不起,您输入的account参数不正确。");
+				break;
+			}
+			UserAccountUtil util = new UserAccountUtil();
+			respModel = util.registerUser(param);
+			break;
 		}
 		case UserInfoMethod:{
 			System.out.println("UserInfoMethod -----");

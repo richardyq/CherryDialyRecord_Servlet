@@ -86,6 +86,9 @@ public class SituationUtil {
 		}
 		
 		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 1, kidId);
+		if (recordModels == null || errorCode != 0) {
+			return null;
+		}
 		models = new ArrayList<SituationModel>();
 		Session session = HibernateUtil.getSession();
 		try {
@@ -122,6 +125,9 @@ public class SituationUtil {
 		}
 		
 		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 2, kidId);
+		if (recordModels == null || errorCode != 0) {
+			return null;
+		}
 		models = new ArrayList<SituationModel>();
 		Session session = HibernateUtil.getSession();
 		try {
@@ -156,6 +162,9 @@ public class SituationUtil {
 		}
 		
 		ArrayList<SituationRecordModel> recordModels = getSituationRecorModels(date, 3, kidId);
+		if (recordModels == null || errorCode != 0) {
+			return null;
+		}
 		models = new ArrayList<SituationModel>();
 		Session session = HibernateUtil.getSession();
 		try {

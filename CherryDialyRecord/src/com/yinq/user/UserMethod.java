@@ -3,6 +3,8 @@ package com.yinq.user;
 
 public enum UserMethod {
 	LoginMethod("login"),
+	ValidLoginAccount("validAccount"),
+	RegisterMethod("register"),
 	UserInfoMethod("getUserInfo"),
 	KidInfoMethod("getKidInfo"),
 	UnkonwnMethod("Unkonwn");

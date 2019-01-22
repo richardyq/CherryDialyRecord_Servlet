@@ -13,6 +13,7 @@ public class KidUtil {
 	
 	public static class KidParam extends JsonModel{
 		private int id;
+		private String date;
 		
 		public KidParam() {
 			
@@ -24,6 +25,14 @@ public class KidUtil {
 
 		public void setId(int id) {
 			this.id = id;
+		}
+
+		public String getDate() {
+			return date;
+		}
+
+		public void setDate(String date) {
+			this.date = date;
 		}
 	}
 	
